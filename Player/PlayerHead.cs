@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Interfaces;
+using UnityEngine;
 
 namespace Player
 {
@@ -28,31 +29,21 @@ namespace Player
             Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             RaycastHit hit;
             last_focused = focused;
+            focused = null;
             if (Physics.Raycast(ray, out hit))
             {
-                GameObject obj = hit.collider.gameObject;
-                if (obj.tag != "Untagged")
-                {
-                    focused = obj;
-                } else
-                {
-                    focused = null;
-                }
-            }  
+                focused = hit.collider.gameObject.GetComponent<IInteractable>() != null ? 
+                    hit.collider.gameObject : 
+                    null;
+            }
+            if (last_focused == focused) return;
+            
+            if (focused == null) {
+                SetMin();
+            }
             else
             {
-                focused = null;
-            }
-            if(last_focused != focused)
-            {
-                if (focused == null) {
-                    SetMin();
-                }
-                else
-                {
-                    SetMax();
-                }
-        
+                SetMax();
             }
         }
         /// <summary>

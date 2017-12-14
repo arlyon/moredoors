@@ -55,7 +55,7 @@ namespace MoreDoors
         /// <summary>
         /// Called when a player goes through a door.
         /// </summary>
-        public void Leave(IPlayer player)
+        public virtual void Leave(IPlayer player)
         {
             this._nextDoor.Arrive(player);
         }
@@ -65,7 +65,7 @@ namespace MoreDoors
         /// Called when a player arrives at a door.
         /// </summary>
         /// <param name="player"></param>
-        public void Arrive(IPlayer player)
+        public virtual void Arrive(IPlayer player)
         {
             this.Unlock();
             player.TeleportTo(this);

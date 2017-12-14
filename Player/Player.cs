@@ -88,16 +88,15 @@ namespace Player
             GameObject focused = head.GetFocused();
             if (Input.GetMouseButtonDown(0))
             {
-                if (focused != null)
+                if (focused == null) return;
+                
+                var interactable = focused.GetComponent<IInteractable>();
+                if (interactable != null)
                 {
-                    IInteractable interact = focused.GetComponent<IInteractable>();
-                    if (interact != null)
-                    {
-                        interact.Interact(this, InteractionType.Primary);
-                    } else
-                    {
-                        Debug.Log("Non-interactable object");
-                    }
+                    interactable.Interact(this, InteractionType.Primary);
+                } else
+                {
+                    Debug.Log("Non-interactable object");
                 }
             }
         }

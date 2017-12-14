@@ -30,9 +30,10 @@ namespace MoreDoors
         /// Gets the door for a door knob.
         /// </summary>
         /// <returns></returns>
-        private Door GetDoor()
+        private IDoor GetDoor()
         {
-            return this.GetComponentInParent<Door>();
+            var door = this.GetComponentInParent<IDoor>();
+            return door;
         }
         
         /// <summary>

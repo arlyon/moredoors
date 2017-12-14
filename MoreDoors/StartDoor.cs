@@ -9,7 +9,17 @@ namespace MoreDoors
         {
             base.Color = Color.black;
         }
-        
+
+        public override void Leave(IPlayer player)
+        {
+            //TODO error
+        }
+
+        public override void Arrive(IPlayer player)
+        {
+            //TODO entry point
+        }
+
         public override void Pair(Door door, Color c)
         {
             return;
