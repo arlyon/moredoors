@@ -27,10 +27,10 @@ namespace Player
         
         // Use this for initialization
         void Start () {
-            start.Arrive(this);
             head = gameObject.GetComponentInChildren<PlayerHead>();
             arms = gameObject.GetComponentInChildren<PlayerArms>();
             controller = gameObject.GetComponentInChildren<CharacterController>();
+            start.Arrive(this);
         }
     
         // Update is called once per frame
@@ -87,7 +87,7 @@ namespace Player
                 vec = vec.normalized * speed;
             }
             vec = gameObject.transform.TransformDirection(vec);
-            controller.Move(vec * Time.deltaTime);
+            controller.SimpleMove(vec);
         }
     
         public void Interactions()
@@ -115,7 +115,6 @@ namespace Player
 
         public void tweenRotation(Vector3 rot)
         {
-            Debug.Log("UPDATE "+ rot);
             head.transform.localEulerAngles = rot;
         }
 
@@ -124,7 +123,6 @@ namespace Player
             head.transform.localEulerAngles = new Vector3(0,0,0);
             head.rotationY = 0;
             head.originalRotation = head.transform.localRotation;
-            Debug.Log("COMPLETE " + head.transform.localEulerAngles);
         }
 
 

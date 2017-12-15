@@ -1,5 +1,6 @@
 ﻿using Interfaces;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Player
 {
@@ -10,10 +11,13 @@ namespace Player
         public GameObject focused;
         private GameObject last_focused;
         public Color color;
+        public string focusedString;
+        private GameObject guiManager;
         // Use this for initialization
         void Start () {
             originalRotation = gameObject.transform.localRotation;
             cam = gameObject.GetComponentInChildren<Camera>();
+            guiManager = GameObject.Find("GUIManager");
             reticle = new Reticle(2, 8);
             reticle.SetColor(color);
             SetMin();
@@ -22,6 +26,19 @@ namespace Player
         public GameObject GetFocused()
         {
             return focused;
+        }
+
+        public void SetGUI(string displayString)
+        {
+            if (displayString != null)
+            {
+                guiManager.transform.GetChild(0).gameObject.SetActive(true);
+                guiManager.transform.GetChild(0).GetComponentInChildren<Text>().text = displayString;
+            } else
+            {
+                guiManager.transform.GetChild(0).gameObject.SetActive(false);
+            }
+            
         }
 
         public void FixedUpdate()
@@ -39,10 +56,13 @@ namespace Player
             if (last_focused == focused) return;
             
             if (focused == null) {
+                SetGUI(null);
                 SetMin();
             }
             else
             {
+                focusedString = focused.GetComponent<IInteractable>().GetInfo();
+                SetGUI(focusedString);
                 SetMax();
             }
         }
