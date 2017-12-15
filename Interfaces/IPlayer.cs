@@ -8,5 +8,7 @@ namespace Interfaces
         bool HasKey(IDoor door);
         void DestroyKey(IDoor door);
         void SetHeldDoorPair(IDoor door);
+        bool HasDoor();
+        void AddKey(Key key);
     }
 }

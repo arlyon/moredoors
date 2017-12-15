@@ -18,9 +18,14 @@ namespace Player
         public float sensitivity = 1;
     
         public float speed;
+
+        public int keys;
+
+        [SerializeField] private StartDoor start;
         
         // Use this for initialization
         void Start () {
+            start.Arrive(this);
             head = gameObject.GetComponentInChildren<PlayerHead>();
             arms = gameObject.GetComponentInChildren<PlayerArms>();
             controller = gameObject.GetComponentInChildren<CharacterController>();
@@ -103,22 +108,37 @@ namespace Player
     
         public void TeleportTo(IDoor door)
         {
-            throw new System.NotImplementedException();
+            this.transform.position = door.GetExitLocation() + Vector3.up; //todo dont hardcode
+            this.transform.rotation = door.GetExitRotation();
         }
 
         public bool HasKey(IDoor door)
         {
-            throw new System.NotImplementedException();
+            return this.keys > 0;
         }
 
         public void DestroyKey(IDoor door)
         {
-            throw new System.NotImplementedException();
+            this.keys -= 1;
         }
 
         public void SetHeldDoorPair(IDoor door)
         {
             throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Checks if the player is holding a door.
+        /// </summary>
+        /// <returns></returns>
+        public bool HasDoor()
+        {
+            return false;
+        }
+
+        public void AddKey(Key key)
+        {
+            this.keys += 1;
         }
     }
 }

@@ -40,6 +40,18 @@ namespace Interfaces
         /// Pairs two doors.
         /// </summary>
         /// <param name="door"></param>
-        void Pair(Door door, Color c);
+        /// <param name="c"></param>
+        void Pair(IDoor door, Color c);
+
+        /// <summary>
+        /// Gets the currently linked door.
+        /// </summary>
+        /// <returns></returns>
+        IDoor GetNext();
+
+        void SetColor(Color color);
+        void SetNext(IDoor next);
+        Vector3 GetExitLocation();
+        Quaternion GetExitRotation();
     }
 }

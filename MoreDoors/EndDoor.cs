@@ -12,7 +12,7 @@ namespace MoreDoors
 
         public override void Leave(IPlayer player)
         {
-            //TODO win
+            this.GetComponent<AudioSource>().Play();
             Debug.Log("Win");
         }
 
@@ -21,7 +21,7 @@ namespace MoreDoors
             //TODO error
         }
 
-        public override void Pair(Door door, Color c)
+        public override void Pair(IDoor door, Color c)
         {
             return;
             // TODO error sound

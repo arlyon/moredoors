@@ -28,7 +28,7 @@ namespace MoreDoors
         {
             this._state += 1;
             var angle = (float) Math.Sin(((float) _state) / Speed) * MaxAngle;
-            this.transform.localEulerAngles = new Vector3(angle, 0, 0);
+            this.transform.localEulerAngles = new Vector3(0, 0, angle);
         }
 
         /// <summary>
@@ -37,16 +37,22 @@ namespace MoreDoors
         /// <param name="shouldLock"></param>
         public void SetLocked(bool shouldLock)
         {
-            this.gameObject.SetActive(shouldLock);
-
             if (shouldLock)
             {
 
             }
             else
             {
-                this.GetComponent<AudioSource>().Play();
+                StartCoroutine(Kill());
             }
+        }
+
+        private IEnumerator Kill()
+        {
+            this.GetComponent<AudioSource>().Play();
+            this.GetComponent<Renderer>().enabled = false;
+            yield return new WaitForSeconds(1);
+            this.gameObject.SetActive(false);
         }
     }
 }

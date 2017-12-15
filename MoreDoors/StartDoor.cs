@@ -17,10 +17,11 @@ namespace MoreDoors
 
         public override void Arrive(IPlayer player)
         {
-            //TODO entry point
+            base.Arrive(player);
+            this.GetComponent<AudioSource>().Play();
         }
 
-        public override void Pair(Door door, Color c)
+        public override void Pair(IDoor door, Color c)
         {
             return;
         }

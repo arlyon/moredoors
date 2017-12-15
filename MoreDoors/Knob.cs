@@ -6,14 +6,15 @@ namespace MoreDoors
 {
     public class Knob : MonoBehaviour, IInteractable
     {
-        [SerializeField]
-        private bool _locked;
+        public bool LockOnStart;
+
+        private bool _locked = true;
         
         /// <summary>
         /// 
         /// </summary>
         private void Start () {
-            if (!_locked)
+            if (!LockOnStart)
             {
                 this.Unlock();
             }
@@ -51,7 +52,7 @@ namespace MoreDoors
         /// </summary>
         public void Unlock()
         {
-            if (this._locked) return;
+            if (!this._locked) return;
             this.GetComponentInChildren<Lock>().SetLocked(false);
             this._locked = false;
         }
@@ -62,6 +63,7 @@ namespace MoreDoors
         public void Interact(IPlayer player, InteractionType it)
         {
             if (this._locked && player.HasKey(this.GetDoor())) this.Unlock(player);
+            else if (_locked) this.GetComponent<AudioSource>().Play();
             else this.GetDoor().Leave(player);
         }
 

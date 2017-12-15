@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Xml;
 using Interfaces;
 using UnityEngine;
 
@@ -41,8 +42,9 @@ namespace MoreDoors
         /// </summary>
         private void Start ()
         {
+            if (this._nextDoor == null) return;
             this.Color = _color;
-            if (this._nextDoor != null) this._nextDoor.Pair(this, _color);
+            this._nextDoor.Pair(this, _color);
         }
 	
         /// <summary>
@@ -101,14 +103,66 @@ namespace MoreDoors
 
         /// <inheritdoc />
         /// <summary>
-        /// Pairs two doors.
+        /// Pairs doors.
         /// </summary>
         /// <param name="door"></param>
         /// <param name="c"></param>
-        public virtual void Pair(Door door , Color c)
+        public virtual void Pair(IDoor door , Color c)
         {
-            this.Color = c;
-            this._nextDoor = door;
+            var curr = (IDoor) this;
+            var next = door;
+            IDoor tmp;
+
+            while (!next.Equals(this) && next != null)
+            {
+                curr.SetColor(c);
+                curr.SetNext(next);
+                
+                tmp = next.GetNext();
+                curr = next;
+                next = tmp;
+            }
+
+            if (next == null)
+            {
+                curr.SetNext(this);
+            }
+        }
+
+        public IDoor GetNext()
+        {
+            return _nextDoor;
+        }
+
+        public void SetColor(Color color)
+        {
+            this.Color = color;
+        }
+
+        public void SetNext(IDoor next)
+        {
+            try
+            {
+                this._nextDoor = (Door) next;
+            }
+            catch
+            {
+                //TODO door is either a start or end door.
+            }
+        }
+
+        public Vector3 GetExitLocation()
+        {
+            Debug.Log("pos: "+this.gameObject.transform.position);
+            Debug.Log(transform.InverseTransformDirection(Vector3.forward));
+            Debug.Log("out: "+(this.gameObject.transform.position + transform.InverseTransformDirection(Vector3.forward)));
+            return this.gameObject.transform.position + transform.forward;
+        }
+
+        public Quaternion GetExitRotation()
+        {
+            Debug.Log(this.transform.rotation.eulerAngles);
+            return this.transform.rotation;
         }
 
         /// <summary>
@@ -119,17 +173,25 @@ namespace MoreDoors
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public virtual void Interact(IPlayer player, InteractionType it)
         {
-            switch (it)
+            if (player.HasDoor())
             {
-                case InteractionType.Primary:
-                    // TODO check if in range and pick up
-                    break;
-                case InteractionType.Secondary:
-                    player.SetHeldDoorPair(this);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("it", it, null);
+                switch (it)
+                {
+                    case InteractionType.Primary:
+                        // TODO overwrite pair
+                        break;
+                    case InteractionType.Secondary:
+                        // TODO add to pair
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException("it", it, null);
+                }
             }
+            else
+            {
+                player.SetHeldDoorPair(this);
+            }
+            
         }
 
         /// <summary>
