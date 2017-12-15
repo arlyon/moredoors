@@ -13,6 +13,7 @@ namespace MoreDoors
         private GameObject target = null;
         private States currentstate = States.IDIE;
         private NavMeshAgent agent;
+        private GameObject player;
 
         public enum States
         {
@@ -110,33 +111,28 @@ namespace MoreDoors
 
         // Use this for initialization
         void Start () {
-            this.walkTo( new Vector3(-3.36f, 5.0f, 3.0f ) );
+            player = GameObject.Find("Player");
+            this.setTarget(player);
 
         }
 	
-        // Update is called once per frame
+        // Update is called once per framedawdawd
         void Update () {
 
-            GameObject target = this.getTarget();
-
-            //This if will block the one below with each update call!
-            if (target != null)
+            if (this.target == null)
             {
-                this.runTo(target.transform.position);
-
+                return;
 
             }
 
-            if (Input.GetMouseButtonDown(0))
+            float dist = Vector3.Distance(this.target.transform.position, transform.position);
+            if(dist < 10.0f)
             {
-                RaycastHit hit;
+                this.runTo(this.target.transform.position);
 
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100))
-                {
-                    this.runTo( hit.point );
-
-                }
             }
+            
+            
 
         }
     }
