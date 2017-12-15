@@ -30,7 +30,7 @@ namespace Player
             RaycastHit hit;
             last_focused = focused;
             focused = null;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, 8f))
             {
                 focused = hit.collider.gameObject.GetComponent<IInteractable>() != null ? 
                     hit.collider.gameObject : 
@@ -49,8 +49,8 @@ namespace Player
         /// <summary>
         /// Used for rotations. 
         /// </summary>
-        private float rotationY = 0;
-        private Quaternion originalRotation;
+        public float rotationY = 0;
+        public Quaternion originalRotation;
         public void Move(float delta)
         {
             rotationY += delta;

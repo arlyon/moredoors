@@ -27,11 +27,6 @@ namespace MoreDoors
             // TODO error sound
         }
 
-        public override void Interact(IPlayer player, InteractionType it)
-        {
-            // TODO WIN
-        }
-
         public override string GetInfo()
         {
             return "Get through this door to win!";

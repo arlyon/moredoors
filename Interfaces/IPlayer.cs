@@ -2,7 +2,7 @@
 
 namespace Interfaces
 {
-    public interface IPlayer
+    public interface IPlayer : IEntity
     {
         void TeleportTo(IDoor door);
         bool HasKey(IDoor door);

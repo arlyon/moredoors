@@ -22,6 +22,8 @@ namespace Player
         public int keys;
 
         [SerializeField] private StartDoor start;
+
+        public float transtitionSpeed;
         
         // Use this for initialization
         void Start () {
@@ -105,12 +107,45 @@ namespace Player
                 }
             }
         }
-    
+
+        public void tweenPosition(Vector3 position)
+        {
+            head.transform.localPosition = position;
+        }
+
+        public void tweenRotation(Vector3 rot)
+        {
+            Debug.Log("UPDATE "+ rot);
+            head.transform.localEulerAngles = rot;
+        }
+
+        public void tweenRotationComplete()
+        {
+            head.transform.localEulerAngles = new Vector3(0,0,0);
+            head.rotationY = 0;
+            head.originalRotation = head.transform.localRotation;
+            Debug.Log("COMPLETE " + head.transform.localEulerAngles);
+        }
+
+
         public void TeleportTo(IDoor door)
         {
+            Vector3 localPosition = head.transform.localPosition;
+            Vector3 fromPosition = head.transform.position;
+
+            Quaternion fromRotation = head.transform.rotation;
+
             this.transform.position = door.GetExitLocation() + Vector3.up; //todo dont hardcode
             this.transform.rotation = door.GetExitRotation();
+
+            head.transform.position = fromPosition;
+            head.transform.rotation = fromRotation;
+
+
+            iTween.ValueTo(gameObject, iTween.Hash("from", head.transform.localPosition, "to", localPosition, "time", transtitionSpeed, "easetype", iTween.EaseType.easeInOutCirc,"onupdate","tweenPosition"));
+            iTween.ValueTo(gameObject, iTween.Hash("from", head.transform.localEulerAngles,"to", new Vector3(0,0,0), "time", transtitionSpeed, "easetype", iTween.EaseType.easeInOutCirc,"oncomplete","tweenRotationComplete","onupdate","tweenRotation"));
         }
+
 
         public bool HasKey(IDoor door)
         {
@@ -139,6 +174,26 @@ namespace Player
         public void AddKey(Key key)
         {
             this.keys += 1;
+        }
+
+        public float GetHealth()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void TakeDamage(float damage)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetHealth(float health)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Die()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -151,17 +151,21 @@ namespace MoreDoors
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Vector3 GetExitLocation()
         {
-            Debug.Log("pos: "+this.gameObject.transform.position);
-            Debug.Log(transform.InverseTransformDirection(Vector3.forward));
-            Debug.Log("out: "+(this.gameObject.transform.position + transform.InverseTransformDirection(Vector3.forward)));
             return this.gameObject.transform.position + transform.forward;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Quaternion GetExitRotation()
         {
-            Debug.Log(this.transform.rotation.eulerAngles);
             return this.transform.rotation;
         }
 
